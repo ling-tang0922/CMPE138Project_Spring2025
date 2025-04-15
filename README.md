@@ -1,4 +1,4 @@
-# CMPE138_Spring2025
+# CMPE 138 Project: Analyzing San Francisco Muni Transit Patterns
 
 Min Ko Ko #015556866
 Ling Tang #015770352
