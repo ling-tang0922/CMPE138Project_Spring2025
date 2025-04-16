@@ -2,7 +2,6 @@
  -- Objective: Display the number of trips associated with each route. 
  -- Taking only the top 20, sort from the route with the most amount of trips to the least. 
  
- -- note: find a way to optimize the query
  SELECT
    r.route_short_name,
    r.route_long_name,
