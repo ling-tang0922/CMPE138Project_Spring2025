@@ -24,6 +24,27 @@ LIMIT 20;
 
 -- Optimized Query #4
 
--- Optimized Query #5
+-- Optimized Query #5 by Sean Tran
+WITH stop_counts AS (
+  SELECT
+    CAST(st.stop_id AS STRING) AS stop_id,  -- Cast to STRING to match the stops table
+    COUNT(st.trip_id) AS num_trips
+  FROM 
+    `bigquery-public-data.san_francisco_transit_muni.stop_times` st
+  GROUP BY 
+    st.stop_id
+)
+SELECT
+  s.stop_name,
+  sc.num_trips
+FROM
+  stop_counts sc
+JOIN 
+  `bigquery-public-data.san_francisco_transit_muni.stops` s
+ON
+  sc.stop_id = s.stop_id
+ORDER BY
+  sc.num_trips DESC
+LIMIT 20;
 
--- Optimized Query #6
+-- Optimized Query #6 by Sean Tran
