@@ -21,6 +21,24 @@
  
  -- Query #4
  
- -- Query #5
- 
- -- Query #6
+ -- Query #5 made by Sean Tran
+ -- Query: Display the number of stop visits associated with each stop.
+ -- Sorting from the stop with the most visits to the least, taking only the top 20.
+
+WITH stop_visit_counts AS (
+  SELECT
+    st.stop_id,
+    COUNT(st.stop_id) AS stop_visits
+  FROM `bigquery-public-data.san_francisco_transit_muni.stop_times` st
+  GROUP BY st.stop_id
+)
+SELECT
+  s.stop_name,
+  svc.stop_visits
+FROM stop_visit_counts svc
+JOIN `bigquery-public-data.san_francisco_transit_muni.stops` s
+  ON CAST(svc.stop_id AS STRING) = s.stop_id
+ORDER BY svc.stop_visits DESC
+LIMIT 20;
+
+ -- Query #6 made by Sean Tran
