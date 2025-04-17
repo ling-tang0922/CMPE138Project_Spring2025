@@ -25,6 +25,8 @@ LIMIT 20;
 -- Optimized Query #4
 
 -- Optimized Query #5 by Sean Tran
+-- Query: Display the number of stop visits associated with each stop.
+-- Sorting from the stop with the most visits to the least, taking only the top 20.
 WITH stop_counts AS (
   SELECT
     CAST(st.stop_id AS STRING) AS stop_id,  -- Cast to STRING to match the stops table
