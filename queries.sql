@@ -42,3 +42,23 @@ ORDER BY svc.stop_visits DESC
 LIMIT 20;
 
  -- Query #6 made by Sean Tran
+ -- Query: Display which routes are the busiest with most trips and the direction of each trip
+WITH route_direction_counts AS (
+  SELECT 
+    route_id,
+    direction,
+    COUNT(trip_id) AS num_trips
+  FROM `bigquery-public-data.san_francisco_transit_muni.trips`
+  WHERE direction IS NOT NULL
+  GROUP BY route_id, direction
+)
+SELECT 
+  r.route_short_name,
+  r.route_long_name,
+  rd.direction,
+  rd.num_trips
+FROM route_direction_counts rd
+JOIN `bigquery-public-data.san_francisco_transit_muni.routes` r
+  ON rd.route_id = r.route_id
+ORDER BY rd.num_trips DESC
+LIMIT 10;
