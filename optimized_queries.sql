@@ -1,6 +1,8 @@
 -- Optimized Query #1 by Ling Tang, using the with clause
 -- Selecting the Number of Trips Associated from Each Route
 -- Sorting from the route with the most amount of trips to the least, take only top 20 
+
+-- !! Need to optimize the query so that it has lower IO cost !!
 WITH route_trip_counts AS (
   SELECT 
     t.route_id,
@@ -27,6 +29,8 @@ LIMIT 20;
 -- Optimized Query #5 by Sean Tran
 -- Query: Display the number of stop visits associated with each stop.
 -- Sorting from the stop with the most visits to the least, taking only the top 20.
+
+-- !! Need to optimize the query so that it has a lower IO cost. Currently, the query is double the IO cost as the unoptimized query (16 MB vs 8 MB) !!
 WITH stop_counts AS (
   SELECT
     CAST(st.stop_id AS STRING) AS stop_id,  -- Cast to STRING to match the stops table
