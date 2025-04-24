@@ -15,7 +15,22 @@
  ORDER BY num_trips DESC
  LIMIT 20;
  
- -- Query #2
+-- Query #2 made by Ling Tang
+-- Find the vehicles and their route that stopped at 7th St & Market St.
+-- Show the vehicles' next stop after the current stop.
+
+SELECT
+ v.vehicle_id,
+ v.route_long_name,
+ -- s.stop_name
+ v.next_stop_name
+
+FROM `bigquery-public-data.san_francisco_transit_muni.vehicle_monitoring` v
+JOIN `bigquery-public-data.san_francisco_transit_muni.stop_monitoring` s
+
+ON v.vehicle_id = s.vehicle_id
+WHERE s.stop_name = '7th St & Market St'
+GROUP BY v.vehicle_id, v.route_long_name, v.next_stop_name
  
  -- Query #3
  
