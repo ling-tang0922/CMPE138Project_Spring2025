@@ -2,11 +2,10 @@
 -- Selecting the Number of Trips Associated from Each Route
 -- Sorting from the route with the most amount of trips to the least, take only top 20 
 
--- !! Need to optimize the query so that it has lower IO cost !!
 WITH route_trip_counts AS (
   SELECT 
     t.route_id,
-    COUNT(t.trip_id) AS num_trips
+    COUNT(*) AS num_trips
   FROM `bigquery-public-data.san_francisco_transit_muni.trips` t
   GROUP BY t.route_id
 )
