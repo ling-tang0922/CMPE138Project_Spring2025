@@ -40,20 +40,26 @@ GROUP BY v.vehicle_id, v.route_long_name, v.next_stop_name
  -- Query: Display the number of stop visits associated with each stop.
  -- Sorting from the stop with the most visits to the least, taking only the top 20.
 
-WITH stop_visit_counts AS (
+WITH stop_counts AS (
   SELECT
-    st.stop_id,
-    COUNT(st.stop_id) AS stop_visits
-  FROM `bigquery-public-data.san_francisco_transit_muni.stop_times` st
-  GROUP BY st.stop_id
+    CAST(st.stop_id AS STRING) AS stop_id,  -- Cast to STRING to match the stops table
+    COUNT(st.trip_id) AS num_trips
+  FROM 
+    `bigquery-public-data.san_francisco_transit_muni.stop_times` st
+  GROUP BY 
+    st.stop_id
 )
 SELECT
   s.stop_name,
-  svc.stop_visits
-FROM stop_visit_counts svc
-JOIN `bigquery-public-data.san_francisco_transit_muni.stops` s
-  ON CAST(svc.stop_id AS STRING) = s.stop_id
-ORDER BY svc.stop_visits DESC
+  sc.num_trips
+FROM
+  stop_counts sc
+JOIN 
+  `bigquery-public-data.san_francisco_transit_muni.stops` s
+ON
+  sc.stop_id = s.stop_id
+ORDER BY
+  sc.num_trips DESC
 LIMIT 20;
 
  -- Query #6 made by Sean Tran
