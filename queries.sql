@@ -16,21 +16,23 @@
  LIMIT 20;
  
 -- Query #2 made by Ling Tang
--- Find the vehicles and their route that stopped at 7th St & Market St.
--- Show the vehicles' next stop after the current stop.
+-- Distinct vehicles served each route on December 11th 2021
 
 SELECT
- v.vehicle_id,
- v.route_long_name,
- -- s.stop_name
- v.next_stop_name
-
-FROM `bigquery-public-data.san_francisco_transit_muni.vehicle_monitoring` v
-JOIN `bigquery-public-data.san_francisco_transit_muni.stop_monitoring` s
-
-ON v.vehicle_id = s.vehicle_id
-WHERE s.stop_name = '7th St & Market St'
-GROUP BY v.vehicle_id, v.route_long_name, v.next_stop_name
+  v.route_id,
+  COUNT(v.vehicle_id) AS vehicles_today
+FROM
+  `bigquery-public-data.san_francisco_transit_muni.stop_monitoring`   s
+JOIN
+  `bigquery-public-data.san_francisco_transit_muni.vehicle_monitoring` v
+  ON v.vehicle_id = s.vehicle_id
+WHERE
+  s.trip_date = '2021-12-11'
+GROUP BY
+  v.route_id
+ORDER BY
+  vehicles_today DESC
+LIMIT 20;
  
  -- Query #3 made by Min
  -- Routes with the Most Stop Appearances, top 20
