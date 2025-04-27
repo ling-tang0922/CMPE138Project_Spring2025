@@ -32,7 +32,23 @@ ON v.vehicle_id = s.vehicle_id
 WHERE s.stop_name = '7th St & Market St'
 GROUP BY v.vehicle_id, v.route_long_name, v.next_stop_name
  
- -- Query #3
+ -- Query #3 made by Min
+ -- Routes with the Most Stop Appearances, top 20
+ SELECT 
+  r.route_short_name,
+  r.route_long_name,
+  COUNT(st.stop_id) AS total_stops
+FROM `bigquery-public-data.san_francisco_transit_muni.stop_times` st
+JOIN `bigquery-public-data.san_francisco_transit_muni.trips` t
+  ON CAST(st.trip_id AS STRING) = CAST(t.trip_id AS STRING)
+JOIN `bigquery-public-data.san_francisco_transit_muni.routes` r
+  ON CAST(t.route_id AS STRING) = CAST(r.route_id AS STRING)
+GROUP BY 
+  r.route_short_name,
+  r.route_long_name
+ORDER BY 
+  total_stops DESC
+LIMIT 20;
  
  -- Query #4
  
