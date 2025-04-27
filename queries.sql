@@ -1,6 +1,6 @@
  -- Query #1 made by Ling Tang
  -- Objective: Display the number of trips associated with each route. 
- -- Taking only the top 20, sort from the route with the most amount of trips to the least. 
+ -- Taking only the top 20, sort from the route with the most trips to the least. 
  
  SELECT
    r.route_short_name,
@@ -16,11 +16,11 @@
  LIMIT 20;
  
 -- Query #2 made by Ling Tang
--- Distinct vehicles served each route on December 11th 2021
+-- Find distinct vehicles served each route on December 11th 2021.
 
 SELECT
   v.route_id,
-  COUNT(v.vehicle_id) AS vehicles_today
+  COUNT(DISTINCT v.vehicle_id) AS vehicles_today
 FROM
   `bigquery-public-data.san_francisco_transit_muni.stop_monitoring`   s
 JOIN
@@ -35,7 +35,7 @@ ORDER BY
 LIMIT 20;
  
  -- Query #3 made by Min
- -- Routes with the Most Stop Appearances, top 20
+ -- Find routes with the most stop appearances in the top 20.
  SELECT 
   r.route_short_name,
   r.route_long_name,
@@ -53,7 +53,7 @@ ORDER BY
 LIMIT 20;
  
  -- Query #4 made by Min
- -- Routes with Longest Average Trip Duration, top 20
+ -- Find routes with the longest average trip duration, in the top 20.
 SELECT 
   r.route_short_name,
   r.route_long_name,
@@ -83,7 +83,7 @@ ORDER BY avg_durations.avg_trip_duration DESC
 LIMIT 20;
 
  -- Query #5 made by Sean Tran
- -- Query: Display the number of stop visits associated with each stop.
+ -- Display the number of stop visits associated with each stop.
  -- Sorting from the stop with the most visits to the least, taking only the top 20.
 
 WITH stop_counts AS (
@@ -109,7 +109,7 @@ ORDER BY
 LIMIT 20;
 
  -- Query #6 made by Sean Tran
- -- Query: Display which routes are the busiest with most trips and the direction of each trip
+ -- Display which routes are the busiest with the most trips and the direction of each trip.
 WITH route_direction_counts AS (
   SELECT 
     route_id,
