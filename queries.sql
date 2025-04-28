@@ -129,3 +129,23 @@ JOIN `bigquery-public-data.san_francisco_transit_muni.routes` r
   ON rd.route_id = r.route_id
 ORDER BY rd.num_trips DESC
 LIMIT 10;
+
+-- Query #7 made by Ling Tang
+-- Objective: Display the number of distinct service blocks (block_id) used by each route (top 10).
+
+SELECT
+  r.route_short_name,
+  r.route_long_name,
+  COUNT(DISTINCT t.block_id) AS num_blocks
+FROM
+  `bigquery-public-data.san_francisco_transit_muni.trips` AS t
+JOIN
+  `bigquery-public-data.san_francisco_transit_muni.routes` AS r
+  ON t.route_id = r.route_id
+GROUP BY
+  r.route_short_name,
+  r.route_long_name
+ORDER BY
+  num_blocks DESC
+LIMIT 10;
+
