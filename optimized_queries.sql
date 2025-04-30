@@ -40,42 +40,9 @@ ORDER BY
   total_stops DESC
 LIMIT 20;
 
--- Optimized Query #4 by Min
--- Routes with Longest Average Trip Duration, top 20
-WITH trip_durations AS (
-  SELECT
-    t.route_id,
-    TIME_DIFF(
-      TIME(MAX(st.arrival_time)),
-      TIME(MIN(st.departure_time)),
-      MINUTE
-    ) AS trip_duration
-  FROM bigquery-public-data.san_francisco_transit_muni.stop_times st
-  JOIN bigquery-public-data.san_francisco_transit_muni.trips t
-    ON CAST(st.trip_id AS STRING) = CAST(t.trip_id AS STRING)
-  GROUP BY t.trip_id, t.route_id
-),
-route_avg_duration AS (
-  SELECT
-    route_id,
-    AVG(trip_duration) AS avg_trip_duration
-  FROM trip_durations
-  GROUP BY route_id
-)
-SELECT
-  r.route_short_name,
-  r.route_long_name,
-  rad.avg_trip_duration
-FROM route_avg_duration rad
-JOIN bigquery-public-data.san_francisco_transit_muni.routes r
-  ON CAST(rad.route_id AS STRING) = r.route_id
-ORDER BY rad.avg_trip_duration DESC
-LIMIT 20;
-
 -- Optimized Query #5 by Sean Tran
 -- Query: Display the number of stop visits associated with each stop.
 -- Sorting from the stop with the most visits to the least, taking only the top 20.
-
 WITH stop_visit_counts AS (
   SELECT
     st.stop_id,
@@ -91,5 +58,3 @@ JOIN bigquery-public-data.san_francisco_transit_muni.stops s
   ON CAST(svc.stop_id AS STRING) = s.stop_id
 ORDER BY svc.stop_visits DESC
 LIMIT 20;
-
--- Optimized Query #6 by Sean Tran
