@@ -21,22 +21,31 @@ LIMIT 20;
 
 -- Optimized Query #3 by Min
 -- Routes with the Most Stop Appearances, top 20
-SELECT 
+WITH stops_per_trip AS (
+  SELECT
+    trip_id,             
+    COUNT(*) AS stops_count
+  FROM
+    `bigquery-public-data.san_francisco_transit_muni.stop_times`
+  GROUP BY
+    trip_id
+)
+SELECT
   r.route_short_name,
   r.route_long_name,
-  COUNT(*) AS total_stops
-FROM 
-  `bigquery-public-data.san_francisco_transit_muni.stop_times` AS st
-JOIN 
+  SUM(sp.stops_count) AS total_stops
+FROM
+  stops_per_trip AS sp
+JOIN
   `bigquery-public-data.san_francisco_transit_muni.trips` AS t
-  ON st.trip_id = CAST(t.trip_id AS INT64)    
-JOIN 
+  ON sp.trip_id = CAST(t.trip_id AS INT64)
+JOIN
   `bigquery-public-data.san_francisco_transit_muni.routes` AS r
-  ON t.route_id = r.route_id     
-GROUP BY 
+  ON t.route_id = r.route_id
+GROUP BY
   r.route_short_name,
   r.route_long_name
-ORDER BY 
+ORDER BY
   total_stops DESC
 LIMIT 20;
 
